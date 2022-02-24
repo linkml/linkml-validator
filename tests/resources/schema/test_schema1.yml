@@ -1,0 +1,37 @@
+id: https://w3id.org/Test-Schema
+name: Test-Schema
+description: >-
+  A Test Schema
+version: 0.0.0
+imports:
+  - linkml:types
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  TEST: https://w3id.org/Test/
+
+default_prefix: TEST
+
+classes:
+  foo:
+    slots:
+      - p1
+      - p2
+      - p3
+
+slots:
+  p1:
+    required: true
+
+  p2:
+    range: integer
+
+  p3:
+    range: value_enum
+
+enums:
+  value_enum:
+    permissible_values:
+      value_x:
+      value_y:
+      value_z:
