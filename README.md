@@ -77,19 +77,19 @@ In this case, one must also specify the object type via `--target_class` argumen
 To run only certain plugins as part of the validation,
 
 ```sh
-linkml-validator --input data.json \
-    --schema schema.yaml
-    --output validation_results.json
-    --plugin JsonschemaValidationPlugin
+linkml-validator --inputs data.json \
+    --schema schema.yaml \
+    --output validation_results.json \
+    --plugins JsonschemaValidationPlugin
 ```
 
 To perform strict validation,
 
 ```sh
-linkml-validator --input data.json \
-    --schema schema.yaml
-    --output validation_results.json
-    --plugin JsonschemaValidationPlugin
+linkml-validator --inputs data.json \
+    --schema schema.yaml \
+    --output validation_results.json \
+    --plugins JsonschemaValidationPlugin \
     --strict
 ```
 
