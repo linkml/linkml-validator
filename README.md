@@ -1,6 +1,7 @@
 # LinkML Validator
 
 [![Run tests](https://github.com/linkml/linkml-validator/actions/workflows/run-tests.yml/badge.svg)](https://github.com/linkml/linkml-validator/actions/workflows/run-tests.yml)
+[![PyPI](https://img.shields.io/pypi/v/linkml-validator)](https://img.shields.io/pypi/v/linkml-validator)
 
 The LinkML Validator is a library for performing validation on data objects that
 conform to a given LinkML schema.
