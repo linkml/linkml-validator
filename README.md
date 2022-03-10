@@ -1,5 +1,7 @@
 # LinkML Validator
 
+[![Run tests](https://github.com/linkml/linkml-validator/actions/workflows/run-tests.yml/badge.svg)](https://github.com/linkml/linkml-validator/actions/workflows/run-tests.yml)
+
 The LinkML Validator is a library for performing validation on data objects that
 conform to a given LinkML schema.
 
@@ -55,7 +57,7 @@ The input JSON can be a dictionary of objects keyed by the object type.
 
 Where the `<OBJECT_TYPE>` is the pythonic representation of a class defined in the schema YAML.
 
-For example, consider [examples/example_data1.json]():
+For example, consider [examples/example_data1.json](examples/example_data1.json):
 
 ```json
 {
@@ -75,7 +77,8 @@ For example, consider [examples/example_data1.json]():
 ```
 
 In the above example, the `NamedThing` is the `target_class`, which is the pythonic
-representation of the class `named thing` as defined in the [examples/example_schema.yaml]().
+representation of the class `named thing` as defined in the
+[examples/example_schema.yaml](examples/example_schema.yaml).
 
 You can run the validator on the above data as follows:
 
@@ -99,7 +102,7 @@ The input JSON can also be an array of objects:
 
 In this case, one must also specify the object type via `--target-class` argument in the CLI.
 
-For example, consider [examples/example_data2.json]():
+For example, consider [examples/example_data2.json](examples/example_data2.json):
 
 ```json
 [
@@ -174,4 +177,5 @@ validator.validate(obj=data_obj, target_class="NamedThing")
 ```
 
 **Note:** The above code makes the assumption that there is a class `named thing` defined
-in the [examples/example_schema.yaml]() and that `NamedThing` is its Pythonic representation.
+in the [examples/example_schema.yaml](examples/example_schema.yaml) and that `NamedThing`
+is its Pythonic representation.
