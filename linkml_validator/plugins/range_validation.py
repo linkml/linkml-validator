@@ -95,7 +95,7 @@ class RangeValidationPlugin(BasePlugin):
                         message = ValidationMessage(
                             severity="Error",
                             message=f"{target_class}.{field}"
-                            + "must have a value from {permissible_values}",
+                            + " must have a value from {permissible_values}",
                             field=field,
                             value=value
                         )
