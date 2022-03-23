@@ -44,10 +44,13 @@ class JsonschemaValidationPlugin(BasePlugin):
             )
         except jsonschema.ValidationError as error:
             msg = error.message
+            field = ".".join(error.relative_path) if error.relative_path else None
             valid = False
             msg = ValidationMessage(
                 severity=SeverityEnum.error.value,
-                message=msg
+                message=msg,
+                field=field,
+                value=error.instance
             )
             result = ValidationResult(
                 plugin_name=self.NAME, valid=valid, validation_messages=[msg]
