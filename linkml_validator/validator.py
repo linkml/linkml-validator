@@ -5,7 +5,7 @@ from linkml_validator.models import ValidationReport
 from linkml_validator.utils import import_plugin
 
 DEFAULT_PLUGINS = {
-    "JsonschemaValidationPlugin": "jsonschema_validation.JsonschemaValidationPlugin"
+    "JsonschemaValidationPlugin": "linkml_validator.plugins.jsonschema_validation.JsonschemaValidationPlugin"
 }
 
 
