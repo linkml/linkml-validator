@@ -11,21 +11,21 @@ from tests import BASE_DIR
         (
             os.path.join(BASE_DIR, "resources", "schema", "test_schema1.yml"),
             os.path.join(BASE_DIR, "resources", "data", "test_schema1_data.json"),
-            {"jsonschema_validation.JsonschemaValidationPlugin"},
+            {"linkml_validator.plugins.jsonschema_validation.JsonschemaValidationPlugin"},
             [True, False, False, False],
         ),
         (
             os.path.join(BASE_DIR, "resources", "schema", "test_schema1.yml"),
             os.path.join(BASE_DIR, "resources", "data", "test_schema1_data.json"),
-            {"range_validation.RangeValidationPlugin"},
+            {"linkml_validator.plugins.range_validation.RangeValidationPlugin"},
             [True, True, False, False],
         ),
         (
             os.path.join(BASE_DIR, "resources", "schema", "test_schema1.yml"),
             os.path.join(BASE_DIR, "resources", "data", "test_schema1_data.json"),
             {
-                "jsonschema_validation.JsonschemaValidationPlugin",
-                "range_validation.RangeValidationPlugin",
+                "linkml_validator.plugins.jsonschema_validation.JsonschemaValidationPlugin",
+                "linkml_validator.plugins.range_validation.RangeValidationPlugin",
             },
             [True, False, False, False],
         ),

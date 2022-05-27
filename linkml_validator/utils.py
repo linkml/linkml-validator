@@ -52,9 +52,10 @@ def import_plugin(plugin_module_name: str, plugin_class_name: str) -> BasePlugin
     :return: The plugin class
 
     """
-    path = ".".join([".plugins", plugin_module_name])
-    plugin_module = importlib.import_module(path, package="linkml_validator")
+    plugin_module = importlib.import_module(plugin_module_name)
     plugin_class = getattr(plugin_module, plugin_class_name)
+    if not issubclass(plugin_class, BasePlugin):
+        raise Exception(f"{plugin_module_name}.{plugin_class_name} must be a subclass of {BasePlugin}")
     return plugin_class
 
 

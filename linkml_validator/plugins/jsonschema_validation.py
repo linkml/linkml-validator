@@ -36,23 +36,21 @@ class JsonschemaValidationPlugin(BasePlugin):
         valid = True
         py_target_class = self.python_module.__dict__[target_class]
         jsonschema_obj = get_jsonschema(self.schema, py_target_class)
-        try:
-            jsonschema.validate(obj, schema=jsonschema_obj)
-            valid = True
-            result = ValidationResult(
-                plugin_name=self.NAME, valid=valid, validation_messages=[]
-            )
-        except jsonschema.ValidationError as error:
-            msg = error.message
-            field = ".".join(error.relative_path) if error.relative_path else None
-            valid = False
-            msg = ValidationMessage(
-                severity=SeverityEnum.error.value,
-                message=msg,
-                field=field,
-                value=error.instance
-            )
-            result = ValidationResult(
-                plugin_name=self.NAME, valid=valid, validation_messages=[msg]
-            )
+        validator = jsonschema.Draft7Validator(jsonschema_obj)
+        errors = [x for x in validator.iter_errors(obj)]
+        result = ValidationResult(
+            plugin_name=self.NAME, valid=valid, validation_messages=[]
+        )
+        if errors:
+            valid = result.valid = False
+            for error in errors:
+                msg = error.message
+                field = ".".join(error.relative_path) if error.relative_path else None
+                validation_message = ValidationMessage(
+                    severity=SeverityEnum.error.value,
+                    message=msg,
+                    field=field,
+                    value=error.instance
+                )
+                result.validation_messages.append(validation_message)
         return result
