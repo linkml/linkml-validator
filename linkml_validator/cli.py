@@ -1,5 +1,6 @@
 import json
 import click
+from linkml_validator.utils import import_plugin
 from linkml_validator.validator import DEFAULT_PLUGINS, Validator
 
 
@@ -49,12 +50,17 @@ def cli(inputs, schema, output, target_class, plugins, strict):
     """
     Run the Validator on data from one or more files.
     """
+    plugin_class_references = set()
+    if not plugins:
+        plugins = DEFAULT_PLUGINS.values()
     for plugin in plugins:
-        if plugin not in PLUGINS:
-            raise ValueError(
-                f"Invalid plugin name: {plugin}. Available plugins are {list(PLUGINS.keys())}"
-            )
-    validator = Validator(schema=schema, plugins=set(PLUGINS[x] for x in plugins))
+        if plugin in PLUGINS:
+            plugin = PLUGINS[plugin]
+        plugin_module_name = ".".join(plugin.split(".")[:-1])
+        plugin_class_name = plugin.split(".")[-1]
+        plugin_class = import_plugin(plugin_module_name, plugin_class_name)
+        plugin_class_references.add(plugin_class)
+    validator = Validator(schema=schema, plugins=plugin_class_references)
     for filename in inputs:
         messages = validator.validate_file(filename=filename, target_class=target_class, strict=strict)
         if output:
