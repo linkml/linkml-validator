@@ -2,10 +2,12 @@ import json
 from typing import Dict, List, Set
 
 from linkml_validator.models import ValidationReport
-from linkml_validator.utils import import_plugin
+from linkml_validator.plugins.base import BasePlugin
+from linkml_validator.plugins.jsonschema_validation import JsonschemaValidationPlugin
+
 
 DEFAULT_PLUGINS = {
-    "JsonschemaValidationPlugin": "linkml_validator.plugins.jsonschema_validation.JsonschemaValidationPlugin"
+    "JsonschemaValidationPlugin": JsonschemaValidationPlugin
 }
 
 
@@ -14,26 +16,22 @@ class Validator:
     Metadata Validator to validate data against a given schema.
 
     :param schema: Path or URL to schema YAML
-    :param plugins: A set of plugins names to use for validation
+    :param plugins: A set of plugin classes to use for validation
 
     """
 
-    def __init__(self, schema: str, plugins: Set[str] = None) -> None:
+    def __init__(self, schema: str, plugins: Set[BasePlugin] = None) -> None:
         self.schema = schema
         self.plugins = set()
         if plugins:
-            for plugin in plugins:
-                plugin_module_name = ".".join(plugin.split(".")[:-1])
-                plugin_class_name = plugin.split(".")[-1]
-                plugin_class = import_plugin(plugin_module_name, plugin_class_name)
-                instance = plugin_class(schema=self.schema)  # type: ignore
+            for plugin_class in plugins:
+                if not issubclass(plugin_class, BasePlugin):
+                    raise Exception(f"{plugin_class} must be a subclass of {BasePlugin}")
+                instance = plugin_class(schema=self.schema)
                 self.plugins.add(instance)
         else:
-            for plugin in DEFAULT_PLUGINS.values():
-                plugin_module_name = ".".join(plugin.split(".")[:-1])
-                plugin_class_name = plugin.split(".")[-1]
-                plugin_class = import_plugin(plugin_module_name, plugin_class_name)
-                instance = plugin_class(schema=self.schema)  # type: ignore
+            for plugin_class in DEFAULT_PLUGINS.values():
+                instance = plugin_class(schema=self.schema)
                 self.plugins.add(instance)
 
     def validate(
