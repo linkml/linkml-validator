@@ -1,12 +1,14 @@
 import json
 import click
+from linkml_validator.plugins.jsonschema_validation import JsonschemaValidationPlugin
+from linkml_validator.plugins.range_validation import RangeValidationPlugin
 from linkml_validator.utils import import_plugin
 from linkml_validator.validator import DEFAULT_PLUGINS, Validator
 
 
 PLUGINS = {
-    "JsonschemaValidationPlugin": "linkml_validator.plugins.jsonschema_validation.JsonschemaValidationPlugin",
-    "RangeValidationPlugin": "linkml_validator.plugins.range_validation.RangeValidationPlugin",
+    "JsonschemaValidationPlugin": JsonschemaValidationPlugin,
+    "RangeValidationPlugin": RangeValidationPlugin,
 }
 
 
