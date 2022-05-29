@@ -1,8 +1,10 @@
+from abc import ABC, abstractmethod
 from typing import Dict
 from linkml_validator.models import ValidationResult
 
 
-class BasePlugin:
+
+class BasePlugin(ABC):
     """
     Base plugin class that all validation plugins should inherit from.
 
@@ -19,6 +21,7 @@ class BasePlugin:
         """
         self.schema = schema
 
+    @abstractmethod
     def process(self, obj: Dict, **kwargs) -> ValidationResult:
         """
         Run one or more operations on the given object and return
@@ -26,5 +29,5 @@ class BasePlugin:
 
         :param obj: The object to process
         :param kwargs:
-
         """
+        ...
