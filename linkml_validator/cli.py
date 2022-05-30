@@ -7,8 +7,8 @@ from linkml_validator.validator import DEFAULT_PLUGINS, Validator
 
 
 PLUGINS = {
-    "JsonschemaValidationPlugin": JsonschemaValidationPlugin,
-    "RangeValidationPlugin": RangeValidationPlugin,
+    "JsonschemaValidationPlugin": "linkml_validator.plugins.jsonschema_validation.JsonschemaValidationPlugin",
+    "RangeValidationPlugin": "linkml_validator.plugins.range_validation.RangeValidationPlugin",
 }
 
 
