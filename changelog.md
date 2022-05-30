@@ -1,8 +1,8 @@
-# 0.3.0 release
+## 0.3.0 release
 
 - Fix bug in CLI
 
-# 0.2.1 release
+## 0.2.1 release
 
 - Ensured proper versioning of releases
 
