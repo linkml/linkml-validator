@@ -1,5 +1,5 @@
 import json
-from typing import Dict, List, Set
+from typing import Dict, Generator, List, Set
 
 from linkml_validator.models import ValidationReport
 from linkml_validator.plugins.base import BasePlugin
@@ -66,18 +66,17 @@ class Validator:
 
     def validate_file(
         self, filename: str, target_class: str = None, strict: bool = False
-    ) -> List[ValidationReport]:
+    ) -> Generator:
         """
-        Validate all objets from a file.
+        Validate all objects from a file.
 
         :param filename: The filename
         :param target_class: The target class which all objects from the input JSON are an instance of
         :param strict: Whether or not to perform strict validation, where any validation
             error stops the validation process. Defaults to False.
-        :return: A list of validation reports that summarizes the validation
+        :return: A generator that can be iterated to get a list of validation reports
 
         """
-        reports = []
         with open(filename, "r", encoding="UTF-8") as file:
             data = json.load(file)
             if isinstance(data, list):
@@ -86,7 +85,7 @@ class Validator:
                         report = self.validate(
                             obj=obj, target_class=target_class, strict=strict
                         )
-                        reports.append(report)
+                        yield report
                 else:
                     raise Exception(f"target_class not defined. Cannot validate array of objects from {filename}.")
             else:
@@ -95,5 +94,4 @@ class Validator:
                         report = self.validate(
                             obj=obj, target_class=target_class, strict=strict
                         )
-                        reports.append(report)
-        return reports
+                        yield report
