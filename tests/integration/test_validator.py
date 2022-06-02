@@ -38,6 +38,6 @@ def test_validator(schema, filename, plugins, validation_status):
         schema=schema,
         plugins=plugins,
     )
-    reports = validator.validate_file(filename=filename)
+    reports = [x for x in validator.validate_file(filename=filename)]
     for i in range(0, len(validation_status)):
         assert reports[i].valid == validation_status[i]

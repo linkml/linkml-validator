@@ -64,9 +64,9 @@ def cli(inputs, schema, output, target_class, plugins, strict):
         plugin_class_references.add(plugin_class)
     validator = Validator(schema=schema, plugins=plugin_class_references)
     for filename in inputs:
-        messages = validator.validate_file(filename=filename, target_class=target_class, strict=strict)
+        reports = [x for x in validator.validate_file(filename=filename, target_class=target_class, strict=strict)]
         if output:
             with open(output, "w", encoding="UTF-8") as file:
-                json.dump([x.dict() for x in messages], file, indent=2)
+                json.dump([x.dict() for x in reports], file, indent=2)
         else:
-            print(json.dumps([x.dict() for x in messages], indent=2))
+            print(json.dumps([x.dict() for x in reports], indent=2))
