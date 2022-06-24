@@ -13,21 +13,25 @@ DEFAULT_PLUGINS = {
 
 class Validator:
     """
-    Metadata Validator to validate data against a given schema.
+    Validator to validate data against a given schema.
 
     :param schema: Path or URL to schema YAML
     :param plugins: A set of plugin classes to use for validation
 
     """
 
-    def __init__(self, schema: str, plugins: Set[BasePlugin] = None) -> None:
+    def __init__(self, schema: str, plugins: List[Dict] = None) -> None:
         self.schema = schema
         self.plugins = set()
         if plugins:
-            for plugin_class in plugins:
+            for plugin in plugins:
+                plugin_class = plugin["plugin_class"]
+                plugin_args = {}
+                if "args" in plugin:
+                    plugin_args = plugin["args"]
                 if not issubclass(plugin_class, BasePlugin):
                     raise Exception(f"{plugin_class} must be a subclass of {BasePlugin}")
-                instance = plugin_class(schema=self.schema)
+                instance = plugin_class(schema=self.schema, **plugin_args)
                 self.plugins.add(instance)
         else:
             for plugin_class in DEFAULT_PLUGINS.values():

@@ -4,6 +4,7 @@ from functools import lru_cache
 from typing import Dict
 
 import stringcase
+from linkml.utils.generator import Generator
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml.generators.pythongen import PythonGenerator
 
@@ -11,34 +12,38 @@ from linkml_validator.plugins.base import BasePlugin
 
 
 @lru_cache()
-def get_python_module(schema: str) -> object:
+def get_python_module(schema: str, generator: Generator = PythonGenerator, **kwargs) -> object:
     """
     Get Python representation of the schema.
 
     :param schema: Path or URL to schema YAML
+    :param generator: The generator to use to generate the Python module
     :return: The Python module compiled from schema YAML
 
     """
-    python_module = PythonGenerator(schema).compile_module()
+    kwargs["schema"] = schema
+    python_module = generator(**kwargs).compile_module()
     return python_module
 
 
 @lru_cache()
-def get_jsonschema(schema: str, py_target_class: object = None) -> Dict:
+def get_jsonschema(schema: str, py_target_class: object = None, generator: Generator = JsonSchemaGenerator, **kwargs) -> Dict:
     """
     Get JSONSchema representation of the schema.
 
     :param schema: Path or URL to schema YAML
     :param py_target_class: The Python representation of the target class
+    :param generator: The generator to use to generate the JSONSchema
     :return: The JSONSchema compiled from the schema YAML
 
     """
-    jsonschemastr = JsonSchemaGenerator(
-        schema,
-        mergeimports=True,
-        top_class=py_target_class.class_name if py_target_class else None,
-        not_closed=False,
-    ).serialize(not_closed=False)
+    if "mergeimports" not in kwargs:
+        kwargs["mergeimports"] = True
+    kwargs["schema"] = schema
+    kwargs["top_class"] = py_target_class.class_name if py_target_class else None
+    if "not_closed" not in kwargs:
+        kwargs["not_closed"] = False
+    jsonschemastr = generator(**kwargs).serialize()
     jsonschema_obj = json.loads(jsonschemastr)
     return jsonschema_obj
 
