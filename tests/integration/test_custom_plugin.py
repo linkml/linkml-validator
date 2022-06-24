@@ -22,7 +22,7 @@ def test_custom_validation_plugin():
             return result
     schema = os.path.join(BASE_DIR, "resources", "schema", "test_schema1.yml")
     filename = os.path.join(BASE_DIR, "resources", "data", "test_schema1_data.json")
-    validator = Validator(schema=schema, plugins={CustomPlugin})
+    validator = Validator(schema=schema, plugins=[{"plugin_class": CustomPlugin}])
     reports = validator.validate_file(filename=filename)
     for report in reports:
         assert not report.valid

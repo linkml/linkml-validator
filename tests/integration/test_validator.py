@@ -13,22 +13,26 @@ from tests import BASE_DIR
         (
             os.path.join(BASE_DIR, "resources", "schema", "test_schema1.yml"),
             os.path.join(BASE_DIR, "resources", "data", "test_schema1_data.json"),
-            {JsonschemaValidationPlugin},
+            [
+                {"plugin_class": JsonschemaValidationPlugin}
+            ],
             [True, False, False, False],
         ),
         (
             os.path.join(BASE_DIR, "resources", "schema", "test_schema1.yml"),
             os.path.join(BASE_DIR, "resources", "data", "test_schema1_data.json"),
-            {RangeValidationPlugin},
+            [
+                {"plugin_class": RangeValidationPlugin}
+            ],
             [True, True, False, False],
         ),
         (
             os.path.join(BASE_DIR, "resources", "schema", "test_schema1.yml"),
             os.path.join(BASE_DIR, "resources", "data", "test_schema1_data.json"),
-            {
-                JsonschemaValidationPlugin,
-                RangeValidationPlugin,
-            },
+            [
+                {"plugin_class": JsonschemaValidationPlugin},
+                {"plugin_class": RangeValidationPlugin},
+            ],
             [True, False, False, False],
         ),
     ],
