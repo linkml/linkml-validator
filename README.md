@@ -10,7 +10,7 @@ The Validator is initialized using a LinkML schema YAML, and is designed to allo
 for flexible validation where each type of validation is done by a plugin.
 
 For example, JSONSchema validation is performed by
-[JsonschemaValidationPlugin](linkml_validator/plugins/jsonschema_validation.py).
+[JsonSchemaValidationPlugin](linkml_validator/plugins/jsonschema_validation.py).
 
 ## Motivation
 
@@ -138,7 +138,7 @@ To run only certain plugins as part of the validation,
 linkml-validator --inputs data.json \
     --schema schema.yaml \
     --output validation_results.json \
-    --plugins JsonschemaValidationPlugin
+    --plugins JsonSchemaValidationPlugin
 ```
 
 To perform strict validation,
@@ -147,7 +147,7 @@ To perform strict validation,
 linkml-validator --inputs data.json \
     --schema schema.yaml \
     --output validation_results.json \
-    --plugins JsonschemaValidationPlugin \
+    --plugins JsonSchemaValidationPlugin \
     --strict
 ```
 
@@ -165,7 +165,7 @@ To run your custom plugin as part of the validation,
 linkml-validator --inputs data.json \
     --schema schema.yaml \
     --output validation_results.json \
-    --plugins JsonschemaValidationPlugin \
+    --plugins JsonSchemaValidationPlugin \
     --plugins <CUSTOM_PLUGIN_CLASS>
 ```
 where `<CUSTOM_PLUGIN_CLASS>` the reference to a custom plugin class.
