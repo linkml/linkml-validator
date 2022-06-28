@@ -1,6 +1,6 @@
 import os
 import pytest
-from linkml_validator.plugins.jsonschema_validation import JsonschemaValidationPlugin
+from linkml_validator.plugins.jsonschema_validation import JsonSchemaValidationPlugin
 from linkml_validator.plugins.range_validation import RangeValidationPlugin
 
 from linkml_validator.validator import Validator
@@ -14,7 +14,7 @@ from tests import BASE_DIR
             os.path.join(BASE_DIR, "resources", "schema", "test_schema1.yml"),
             os.path.join(BASE_DIR, "resources", "data", "test_schema1_data.json"),
             [
-                {"plugin_class": JsonschemaValidationPlugin}
+                {"plugin_class": JsonSchemaValidationPlugin}
             ],
             [True, False, False, False],
         ),
@@ -30,7 +30,7 @@ from tests import BASE_DIR
             os.path.join(BASE_DIR, "resources", "schema", "test_schema1.yml"),
             os.path.join(BASE_DIR, "resources", "data", "test_schema1_data.json"),
             [
-                {"plugin_class": JsonschemaValidationPlugin},
+                {"plugin_class": JsonSchemaValidationPlugin},
                 {"plugin_class": RangeValidationPlugin},
             ],
             [True, False, False, False],
