@@ -3,11 +3,11 @@ from typing import Dict, Generator, List, Set
 
 from linkml_validator.models import ValidationReport
 from linkml_validator.plugins.base import BasePlugin
-from linkml_validator.plugins.jsonschema_validation import JsonschemaValidationPlugin
+from linkml_validator.plugins.jsonschema_validation import JsonSchemaValidationPlugin
 
 
 DEFAULT_PLUGINS = {
-    "JsonschemaValidationPlugin": JsonschemaValidationPlugin
+    "JsonschemaValidationPlugin": JsonSchemaValidationPlugin
 }
 
 

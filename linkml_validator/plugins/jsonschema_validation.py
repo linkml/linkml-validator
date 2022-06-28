@@ -7,7 +7,7 @@ from linkml_validator.plugins.base import BasePlugin
 from linkml_validator.utils import get_jsonschema, get_python_module
 
 
-class JsonschemaValidationPlugin(BasePlugin):
+class JsonSchemaValidationPlugin(BasePlugin):
     """
     Plugin to perform JSONSchema validation.
 
@@ -16,7 +16,7 @@ class JsonschemaValidationPlugin(BasePlugin):
 
     """
 
-    NAME = "JsonschemaValidationPlugin"
+    NAME = "JsonSchemaValidationPlugin"
 
     def __init__(self, schema: str, jsonschema_generator: Generator = JsonSchemaGenerator, **kwargs) -> None:
         super().__init__(schema)
