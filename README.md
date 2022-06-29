@@ -29,6 +29,12 @@ type of validation on an object
 python setup.py install
 ```
 
+To install development dependencies (like `pytest`, `mkdocs`, etc.):
+
+```sh
+pip install -e ".[dev]"
+```
+
 ## Running the LinkML Validator via CLI
 
 To run the LinkML Validator,
@@ -90,7 +96,7 @@ linkml-validator --inputs examples/example_data1.json \
 ```
 
 
-### Input data as an array of ojbects
+### Input data as an array of objects
 
 The input JSON can also be an array of objects:
 

@@ -27,6 +27,14 @@ source env/bin/activate
 python setup.py install
 ```
 
+**Installation for development**
+
+To install development dependencies (like `pytest`, `mkdocs`, etc.):
+
+```sh
+pip install -e ".[dev]"
+```
+<br>
 
 To test that the installation is successful, try the following:
 
