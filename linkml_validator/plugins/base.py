@@ -18,6 +18,11 @@ class BasePlugin(ABC):
     def __init__(self, schema: str, **kwargs) -> None:
         """
         Initialize the plugin with the given schema YAML.
+
+        Args:
+            schema: Path or URL to schema YAML
+            kwargs: Additional arguments that are used to instantiate the plugin
+
         """
         self.schema = schema
 
@@ -27,7 +32,9 @@ class BasePlugin(ABC):
         Run one or more operations on the given object and return
         the results.
 
-        :param obj: The object to process
-        :param kwargs:
+        Args:
+            obj: The object to process
+            kwargs: Additional arguments that are used for processing
+
         """
         ...

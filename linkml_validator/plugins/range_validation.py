@@ -13,8 +13,9 @@ class RangeValidationPlugin(BasePlugin):
     Plugin to check whether fields of an object have the proper range.
     i.e. the value for the fields are in the correct form.
 
-    :param schema: Path or URL to schema YAML
-    :param kwargs:
+    Args:
+        schema: Path or URL to schema YAML
+        kwargs: Additional arguments that are used to instantiate the plugin
 
     """
 
@@ -24,14 +25,16 @@ class RangeValidationPlugin(BasePlugin):
         super().__init__(schema)
         self.schemaview = SchemaView(schema)
 
-    def process(self, obj: Dict, **kwargs) -> ValidationResult:  # noqa: C901
+    def process(self, obj: Dict, **kwargs) -> ValidationResult:
         """
         Perform validation on an object.
 
-        
-        :param obj: The object to validate
-        :param target_class: The target class
-        :return: Validation result that describes the outcome of validation.
+        Args:
+            obj: The object to validate
+            kwargs: Additional arguments that are used for processing
+
+        Returns:
+            ValidationResult: A validation result that describes the outcome of validation
 
         """
         if "target_class" not in kwargs:

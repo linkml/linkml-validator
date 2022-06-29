@@ -1,54 +1,21 @@
-# LinkML Validator
-
-[![Run tests](https://github.com/linkml/linkml-validator/actions/workflows/run-tests.yml/badge.svg)](https://github.com/linkml/linkml-validator/actions/workflows/run-tests.yml)
-[![PyPI](https://img.shields.io/pypi/v/linkml-validator)](https://img.shields.io/pypi/v/linkml-validator)
-
-The LinkML Validator is a library for performing validation on data objects that
-conform to a given LinkML schema.
-
-The Validator is initialized using a LinkML schema YAML, and is designed to allow
-for flexible validation where each type of validation is done by a plugin.
-
-For example, JSONSchema validation is performed by
-[JsonSchemaValidationPlugin](linkml_validator/plugins/jsonschema_validation.py).
-
-## Motivation
-
-The LinkML Validator is built with the following goals in mind:
-- the Validator should respond with parseable validation messages
-- the Validator should not break the validation process even if one
-object from a list of objects fail validation
-- the Validator should provide the ability to perform more than one
-type of validation on an object
-
-
-
-## Installation
-
-```sh
-python setup.py install
-```
-
-To install development dependencies (like `pytest`, `mkdocs`, etc.):
-
-```sh
-pip install -e ".[dev]"
-```
+# Using the LinkML Validator
 
 ## Running the LinkML Validator via CLI
 
 To run the LinkML Validator,
 
 ```sh
-linkml-validator --inputs <INPUT JSON> \
-    --schema <SCHEMA YAML> \
+linkml-validator --inputs <INPUT_JSON> \
+    --schema <SCHEMA_YAML> \
     --output <OUTPUT>
 ```
 
 You can pass filepath or a URL that points to the LinkML schema YAML.
 
 
-### Input data as a dictionary of objects
+### Input Data
+
+#### Input data as a dictionary of objects
 
 The input JSON can be a dictionary of objects keyed by the object type.
 
@@ -62,9 +29,9 @@ The input JSON can be a dictionary of objects keyed by the object type.
 }
 ```
 
-Where the `<OBJECT_TYPE>` is the pythonic representation of a class defined in the schema YAML.
+Where the `<OBJECT_TYPE>` is the pythonic representation of a class defined in the schema YAML. i.e. the class name is in CamelCase.
 
-For example, consider [examples/example_data1.json](examples/example_data1.json):
+For example, consider [examples/example_data1.json](https://github.com/linkml/linkml-validator/blob/main/examples/example_data1.json):
 
 ```json
 {
@@ -85,7 +52,7 @@ For example, consider [examples/example_data1.json](examples/example_data1.json)
 
 In the above example, the `NamedThing` is the `target_class`, which is the pythonic
 representation of the class `named thing` as defined in the
-[examples/example_schema.yaml](examples/example_schema.yaml).
+[examples/example_schema.yaml](https://github.com/linkml/linkml-validator/blob/main/examples/example_schema.yaml).
 
 You can run the validator on the above data as follows:
 
@@ -95,8 +62,7 @@ linkml-validator --inputs examples/example_data1.json \
     --output examples/example_data1_validation_report.json
 ```
 
-
-### Input data as an array of objects
+#### Input data as an array of objects
 
 The input JSON can also be an array of objects:
 
@@ -109,7 +75,7 @@ The input JSON can also be an array of objects:
 
 In this case, one must also specify the object type via `--target-class` argument in the CLI.
 
-For example, consider [examples/example_data2.json](examples/example_data2.json):
+For example, consider [examples/example_data2.json](https://github.com/linkml/linkml-validator/blob/main/examples/example_data2.json):
 
 ```json
 [
@@ -136,7 +102,7 @@ linkml-validator --inputs examples/example_data2.json \
 ```
 
 
-## Running selected plugins
+### Running selected plugins
 
 To run only certain plugins as part of the validation,
 
@@ -163,7 +129,7 @@ referenced plugins on a given object.
 When in strict mode, the validator will stop the validation for an object if even one
 of the plugins report a failed validation.
 
-## Running your own plugins with the Validator (via CLI)
+### Running your own plugins with the Validator (via CLI)
 
 To run your custom plugin as part of the validation,
 
@@ -174,9 +140,10 @@ linkml-validator --inputs data.json \
     --plugins JsonSchemaValidationPlugin \
     --plugins <CUSTOM_PLUGIN_CLASS>
 ```
-where `<CUSTOM_PLUGIN_CLASS>` the reference to a custom plugin class.
+where `<CUSTOM_PLUGIN_CLASS>` is the reference to a custom plugin class.
 
 **Note:** The custom plugin class must be a subclass of `linkml_validator.plugins.base.BasePlugin` and must implement all the methods defined in `BasePlugin` class.
+
 
 
 ## Using LinkML Validator as a module
@@ -200,8 +167,8 @@ validator.validate(obj=data_obj, target_class="NamedThing")
 ```
 
 **Note:** The above code makes the assumption that there is a class `named thing` defined
-in the [examples/example_schema.yaml](examples/example_schema.yaml) and that `NamedThing`
-is its Pythonic representation.
+in the [examples/example_schema.yaml](https://github.com/linkml/linkml-validator/blob/main/examples/example_schema.yaml) and that `NamedThing`
+is its Pythonic name.
 
 
 You can also provide your own custom plugin class to run with the Validator,
@@ -237,4 +204,3 @@ validator = Validator(schema="examples/example_schema.yaml", plugins={MyCustomPl
 validator.validate(obj=data_obj, target_class="NamedThing")
 
 ```
-
