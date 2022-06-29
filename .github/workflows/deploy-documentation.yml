@@ -1,0 +1,26 @@
+name: Deploy Documentation
+on:
+  push:
+    branches: [ main ]
+    paths:
+    - docs/*
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install
+        run: |
+          pip install -e ".[dev]"
+
+      - name: Build docs and push to gh-pages
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          make gh-deploy
