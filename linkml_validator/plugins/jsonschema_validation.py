@@ -11,8 +11,9 @@ class JsonSchemaValidationPlugin(BasePlugin):
     """
     Plugin to perform JSONSchema validation.
 
-    :param schema: Path or URL to schema YAML
-    :param kwargs:
+    Args:
+        schema: Path or URL to schema YAML
+        kwargs: Additional arguments that are used to instantiate the plugin
 
     """
 
@@ -27,9 +28,12 @@ class JsonSchemaValidationPlugin(BasePlugin):
         """
         Perform validation on an object.
 
-        :param obj: The object to validate
-        :param target_class: The target class
-        :return: A Validation result that describes the outcome of validation
+        Args:
+            obj: The object to validate
+            kwargs: Additional arguments that are used for processing
+
+        Returns:
+            ValidationResult: A validation result that describes the outcome of validation
 
         """
         if "target_class" not in kwargs:

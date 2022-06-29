@@ -15,8 +15,9 @@ class Validator:
     """
     Validator to validate data against a given schema.
 
-    :param schema: Path or URL to schema YAML
-    :param plugins: A set of plugin classes to use for validation
+    Args:
+        schema: Path or URL to schema YAML
+        plugins: A set of plugin classes to use for validation
 
     """
 
@@ -44,11 +45,14 @@ class Validator:
         """
         Validate an object.
 
-        :param obj: The object to validate
-        :param target_class: The type of object
-        :param strict: Whether or not to perform strict validation, where any validation
-            error stops the validation process. Defaults to False.
-        :return: A validation report that summarizes the validation
+        Args:
+            obj: The object to validate
+            target_class: The type of object
+            strict: Whether or not to perform strict validation, where any validation
+                error stops the validation process. Defaults to `False`.
+
+        Returns:
+            ValidationReport: A validation report that summarizes the validation
 
         """
         validation_results = []
@@ -74,11 +78,14 @@ class Validator:
         """
         Validate all objects from a file.
 
-        :param filename: The filename
-        :param target_class: The target class which all objects from the input JSON are an instance of
-        :param strict: Whether or not to perform strict validation, where any validation
-            error stops the validation process. Defaults to False.
-        :return: A generator that can be iterated to get a list of validation reports
+        Args:
+            filename: The filename
+            target_class: The target class which all objects from the input JSON are an instance of
+            strict: Whether or not to perform strict validation, where any validation
+                error stops the validation process. Defaults to `False`.
+
+        Returns:
+            Generator: A generator that can be iterated to get a list of validation reports
 
         """
         with open(filename, "r", encoding="UTF-8") as file:

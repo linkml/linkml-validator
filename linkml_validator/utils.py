@@ -16,9 +16,12 @@ def get_python_module(schema: str, generator: Generator = PythonGenerator, **kwa
     """
     Get Python representation of the schema.
 
-    :param schema: Path or URL to schema YAML
-    :param generator: The generator to use to generate the Python module
-    :return: The Python module compiled from schema YAML
+    Args:
+        schema: Path or URL to schema YAML
+        generator: The generator to use to generate the Python module
+
+    Returns:
+        object: The Python module compiled from schema YAML
 
     """
     kwargs["schema"] = schema
@@ -31,10 +34,13 @@ def get_jsonschema(schema: str, py_target_class: object = None, generator: Gener
     """
     Get JSONSchema representation of the schema.
 
-    :param schema: Path or URL to schema YAML
-    :param py_target_class: The Python representation of the target class
-    :param generator: The generator to use to generate the JSONSchema
-    :return: The JSONSchema compiled from the schema YAML
+    Args:
+        schema: Path or URL to schema YAML
+        py_target_class: The Python representation of the target class
+        generator: The generator to use to generate the JSONSchema
+
+    Returns:
+        dict: The JSONSchema compiled from the schema YAML
 
     """
     if "mergeimports" not in kwargs:
@@ -52,9 +58,12 @@ def import_plugin(plugin_module_name: str, plugin_class_name: str) -> BasePlugin
     """
     Import a plugin class.
 
-    :param plugin_module_name: The name of the plugin module
-    :param plugin_class_name: The name of the class in the plugin module
-    :return: The plugin class
+    Args:
+        plugin_module_name: The name of the plugin module
+        plugin_class_name: The name of the class in the plugin module
+
+    Returns:
+        BasePlugin: The plugin class
 
     """
     plugin_module = importlib.import_module(plugin_module_name)
@@ -68,8 +77,11 @@ def camelcase_to_sentencecase(name: str) -> str:
     """
     Convert a given string from CamelCase to sentence case.
 
-    :param name: A string in CamelCase
-    :return: The converted string in sentence case
+    Args:
+        name: A string in CamelCase
+
+    Returns:
+        str: The converted string in sentence case
 
     """
     return stringcase.sentencecase(stringcase.snakecase(name)).lower()
@@ -79,8 +91,11 @@ def snakecase_to_sentencecase(name: str) -> str:
     """
     Convert a given string from snake_case to sentence case.
 
-    :param name: A string in snake_case
-    :return: The converted string in sentence case
+    Args:
+        name: A string in snake_case
+
+    Returns:
+        str: The converted string in sentence case
 
     """
     return stringcase.sentencecase(name).lower()
