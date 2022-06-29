@@ -1,0 +1,44 @@
+site_name: "LinkML Validator"
+theme:
+  name: material
+  palette:
+    scheme: default
+    primary: white
+
+  font:
+    text: Tilium Web
+    code: Courier Prime
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.indexes
+    - navigation.expand
+    - toc.integrate
+  icon:
+    repo: fontawesome/brands/github-square
+nav:
+  - Home: index.md
+  - Design Principles: design.md
+  - Installation: installation.md
+  - Documentation:
+    - 'Validator': 'reference/validator.md'
+    - 'Plugins': 'reference/plugins.md'
+    - 'Models': 'reference/models.md'
+    - 'Utilities': 'reference/utils.md'
+  - Usage: usage.md
+markdown_extensions:
+  - attr_list
+  - toc:
+      permalink: true
+      toc_depth: 2
+plugins:
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: true
+
+repo_url: https://github.com/linkml/linkml-validator
+repo_name: linkml/linkml-validator
