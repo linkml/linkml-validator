@@ -40,7 +40,7 @@ class Validator:
                 self.plugins.add(instance)
 
     def validate(
-        self, obj: Dict, target_class: str, strict: bool = False
+        self, obj: Dict, target_class: str, strict: bool = False, **kwargs
     ) -> ValidationReport:
         """
         Validate an object.
@@ -50,6 +50,7 @@ class Validator:
             target_class: The type of object
             strict: Whether or not to perform strict validation, where any validation
                 error stops the validation process. Defaults to `False`.
+            kwargs: Any additional arguments
 
         Returns:
             ValidationReport: A validation report that summarizes the validation
@@ -57,15 +58,19 @@ class Validator:
         """
         validation_results = []
         valid = True
+        if "exclude_object" in kwargs:
+            exclude_object = kwargs["exclude_object"]
+        else:
+            exclude_object = False
         for plugin in self.plugins:
-            validation_result = plugin.process(obj=obj, target_class=target_class)
+            validation_result = plugin.process(obj=obj, target_class=target_class, **kwargs)
             validation_results.append(validation_result)
             if not validation_result.valid:
                 valid = False
                 if strict:
                     break
         validation_report = ValidationReport(
-            object=obj,
+            object=obj if not exclude_object else None,
             type=target_class,
             valid=valid,
             validation_results=validation_results,

@@ -4,7 +4,7 @@ from linkml.utils.generator import Generator
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_validator.models import SeverityEnum, ValidationMessage, ValidationResult
 from linkml_validator.plugins.base import BasePlugin
-from linkml_validator.utils import get_jsonschema, get_python_module
+from linkml_validator.utils import get_jsonschema, get_python_module, truncate
 
 
 class JsonSchemaValidationPlugin(BasePlugin):
@@ -41,6 +41,10 @@ class JsonSchemaValidationPlugin(BasePlugin):
         """
         if "target_class" not in kwargs:
             raise Exception("Need `target_class` argument")
+        if "truncate_message" in kwargs:
+            truncate_message = kwargs["truncate_message"]
+        else:
+            truncate_message = False
         target_class = kwargs["target_class"]
         valid = True
         py_target_class = self.python_module.__dict__[target_class]
@@ -62,14 +66,14 @@ class JsonSchemaValidationPlugin(BasePlugin):
             for error in errors:
                 outer_validation_message = ValidationMessage(
                     severity=SeverityEnum.error.value,
-                    message=error.message,
+                    message=truncate(error.message) if truncate_message else error.message,
                     field = ".".join(map(str, error.absolute_path)) if error.absolute_path else None,
                     value=error.instance if not isinstance(error.instance, dict) else None
                 )
                 for suberror in sorted(error.context, key=lambda e: e.schema_path):
                     inner_validation_message = ValidationMessage(
                         severity=SeverityEnum.error.value,
-                        message=suberror.message,
+                        message=truncate(suberror.message) if truncate_message else suberror.message,
                         field = ".".join(map(str, suberror.absolute_path)) if suberror.absolute_path else outer_validation_message.field,
                         value=suberror.instance if not isinstance(suberror.instance, dict) else None
                     )
