@@ -1,6 +1,8 @@
+import builtins
 import importlib
 import json
 from functools import lru_cache
+import reprlib
 from typing import Dict
 
 import stringcase
@@ -99,3 +101,24 @@ def snakecase_to_sentencecase(name: str) -> str:
 
     """
     return stringcase.sentencecase(name).lower()
+
+
+def truncate(text_str: str, max_length: int = 256) -> str:
+    """
+    Truncate a string, from the middle, to a given max length.
+
+    Args:
+        text_str: The text to truncate
+        max_length: The maximum length of the truncated string
+
+    Returns:
+        str: The truncated string
+
+    """
+    truncated_str = text_str[:max_length]
+    if len(truncated_str) == max_length:
+        i = max(0, (max_length - 3) // 2)
+        j = max(0, max_length - 3 - i)
+        truncated_str = text_str[:i] + text_str[len(text_str)-j:]
+        truncated_str = truncated_str[:i] + '...' + truncated_str[len(truncated_str)-j:]
+    return truncated_str
