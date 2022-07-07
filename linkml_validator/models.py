@@ -38,7 +38,7 @@ class ValidationReport(BaseModel):
     ValidationReport represents the result of all types of
     validation for a given object.
     """
-    object: Dict
+    object: Optional[Dict]
     type: str
     valid: bool
     validation_results: List[ValidationResult]
