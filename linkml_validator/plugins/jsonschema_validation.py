@@ -5,6 +5,8 @@ from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_validator.models import SeverityEnum, ValidationMessage, ValidationResult
 from linkml_validator.plugins.base import BasePlugin
 from linkml_validator.utils import get_jsonschema, get_python_module, truncate
+from linkml_runtime.utils.schemaview import SchemaView
+from linkml_runtime.utils.formatutils import camelcase
 
 
 class JsonSchemaValidationPlugin(BasePlugin):
@@ -26,6 +28,26 @@ class JsonSchemaValidationPlugin(BasePlugin):
         self.python_module = get_python_module(schema)
         self.jsonschema_generator = jsonschema_generator
         self.generator_args = generator_args if generator_args else {}
+        self.jsonschema_obj_map = {}
+        self._generate_jsonschema()
+
+    def _generate_jsonschema(self) -> None:
+        """
+        Generate JSON Schema representation for all classes in the schema.
+        """
+        schemaview = SchemaView(self.schema)
+        for class_name, class_def in schemaview.all_classes().items():
+            if not class_def.mixin:
+                formatted_name = camelcase(class_name)
+                py_target_class = self.python_module.__dict__[formatted_name]
+                if formatted_name not in self.jsonschema_obj_map:
+                    jsonschema_obj = get_jsonschema(
+                        schema=self.schema,
+                        py_target_class=py_target_class,
+                        generator=self.jsonschema_generator,
+                        **self.generator_args
+                    )
+                    self.jsonschema_obj_map[formatted_name] = jsonschema_obj
 
     def process(self, obj: Dict, **kwargs) -> ValidationResult:
         """
@@ -47,13 +69,7 @@ class JsonSchemaValidationPlugin(BasePlugin):
             truncate_message = False
         target_class = kwargs["target_class"]
         valid = True
-        py_target_class = self.python_module.__dict__[target_class]
-        jsonschema_obj = get_jsonschema(
-            schema=self.schema,
-            py_target_class=py_target_class,
-            generator=self.jsonschema_generator,
-            **self.generator_args
-        )
+        jsonschema_obj = self.jsonschema_obj_map[target_class]
         validator = jsonschema.Draft7Validator(jsonschema_obj)
         errors = [x for x in validator.iter_errors(obj)]
         result = ValidationResult(
