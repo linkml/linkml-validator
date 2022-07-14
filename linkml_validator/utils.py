@@ -32,6 +32,22 @@ def get_python_module(schema: str, generator: Generator = PythonGenerator, **kwa
 
 
 @lru_cache()
+def get_generator(generator: Generator, **kwargs) -> Generator:
+    """
+    Get an instance of a given Generator.
+
+    Args:
+        generator: A Generator class that is to be instantiated
+        kwargs: Additional arguments to the generator
+
+    Returns:
+        Generator: An instance of the given Generator
+
+    """
+    return generator(**kwargs)
+
+
+@lru_cache()
 def get_jsonschema(schema: str, py_target_class: object = None, generator: Generator = JsonSchemaGenerator, **kwargs) -> Dict:
     """
     Get JSONSchema representation of the schema.
@@ -48,10 +64,12 @@ def get_jsonschema(schema: str, py_target_class: object = None, generator: Gener
     if "mergeimports" not in kwargs:
         kwargs["mergeimports"] = True
     kwargs["schema"] = schema
-    kwargs["top_class"] = py_target_class.class_name if py_target_class else None
     if "not_closed" not in kwargs:
         kwargs["not_closed"] = False
-    jsonschemastr = generator(**kwargs).serialize()
+    top_class = py_target_class.class_name if py_target_class else None
+    generator = get_generator(generator, **kwargs)
+    generator.topCls = top_class
+    jsonschemastr = generator.serialize()
     jsonschema_obj = json.loads(jsonschemastr)
     return jsonschema_obj
 
