@@ -70,7 +70,7 @@ class Validator:
                 if strict:
                     break
         validation_report = ValidationReport(
-            object=obj if not exclude_object else None,
+            object=obj if not exclude_object else '<OMITTED>',
             type=target_class,
             valid=valid,
             validation_results=validation_results,
