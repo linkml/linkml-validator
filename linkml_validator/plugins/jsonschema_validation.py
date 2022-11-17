@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import List, Dict
 import jsonschema
 from linkml.utils.generator import Generator
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
@@ -29,16 +29,30 @@ class JsonSchemaValidationPlugin(BasePlugin):
         self.jsonschema_generator = jsonschema_generator
         self.generator_args = generator_args if generator_args else {}
         self.jsonschema_obj_map = {}
-        self._generate_jsonschema()
+        class_list = None
+        if 'class_list' in kwargs:
+            class_list = kwargs['class_list']
+        self._generate_jsonschema(class_list=class_list)
 
-    def _generate_jsonschema(self) -> None:
+    def _generate_jsonschema(self, class_list: List[str] = None) -> None:
         """
-        Generate JSON Schema representation for all classes in the schema.
+        Generate JSON Schema representation for all (or specific) classes
+        in the schema.
+
+        Args:
+            class_list: A list of classes for which to generate JSONSchema
+
         """
         schemaview = SchemaView(self.schema)
         for class_name, class_def in schemaview.all_classes().items():
             if not class_def.mixin:
                 formatted_name = camelcase(class_name)
+                if class_list:
+                    if formatted_name not in class_list:
+                        continue
+                    if class_def.abstract:
+                        print(f"Ignoring abstract class '{formatted_name}'")
+                        continue
                 py_target_class = self.python_module.__dict__[formatted_name]
                 if formatted_name not in self.jsonschema_obj_map:
                     jsonschema_obj = get_jsonschema(
