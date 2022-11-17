@@ -68,7 +68,7 @@ def get_jsonschema(schema: str, py_target_class: object = None, generator: Gener
         kwargs["not_closed"] = False
     top_class = py_target_class.class_name if py_target_class else None
     generator = get_generator(generator, **kwargs)
-    generator.topCls = top_class
+    generator.top_class = top_class
     jsonschemastr = generator.serialize()
     jsonschema_obj = json.loads(jsonschemastr)
     return jsonschema_obj
