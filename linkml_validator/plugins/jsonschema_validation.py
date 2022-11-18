@@ -1,5 +1,6 @@
 from typing import List, Dict
 import jsonschema
+import copy
 from linkml.utils.generator import Generator
 from linkml.generators.jsonschemagen import JsonSchemaGenerator
 from linkml_validator.models import SeverityEnum, ValidationMessage, ValidationResult
@@ -44,24 +45,29 @@ class JsonSchemaValidationPlugin(BasePlugin):
 
         """
         schemaview = SchemaView(self.schema)
+        jsonschema_obj = None
         for class_name, class_def in schemaview.all_classes().items():
             if not class_def.mixin:
                 formatted_name = camelcase(class_name)
                 if class_list:
                     if formatted_name not in class_list:
                         continue
-                    if class_def.abstract:
-                        print(f"Ignoring abstract class '{formatted_name}'")
-                        continue
+                if class_def.abstract:
+                    # Skip abstract classes
+                    continue
                 py_target_class = self.python_module.__dict__[formatted_name]
                 if formatted_name not in self.jsonschema_obj_map:
-                    jsonschema_obj = get_jsonschema(
-                        schema=self.schema,
-                        py_target_class=py_target_class,
-                        generator=self.jsonschema_generator,
-                        **self.generator_args
-                    )
-                    self.jsonschema_obj_map[formatted_name] = jsonschema_obj
+                    if not jsonschema_obj:
+                        jsonschema_obj = get_jsonschema(
+                            schema=self.schema,
+                            py_target_class=py_target_class,
+                            generator=self.jsonschema_generator,
+                            **self.generator_args
+                        )
+                    target_jsonschema_obj = copy.deepcopy(jsonschema_obj)
+                    target_jsonschema_obj['properties'] = jsonschema_obj["$defs"][formatted_name].get('properties', {})
+                    target_jsonschema_obj['required'] = jsonschema_obj["$defs"][formatted_name].get('required', [])
+                    self.jsonschema_obj_map[formatted_name] = target_jsonschema_obj
 
     def process(self, obj: Dict, **kwargs) -> ValidationResult:
         """
