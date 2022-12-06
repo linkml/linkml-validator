@@ -233,7 +233,7 @@ data_obj = {
     "name": "Object 1",
     "type": "X"
 }
-validator = Validator(schema="examples/example_schema.yaml", plugins={MyCustomPlugin})
+validator = Validator(schema="examples/example_schema.yaml", plugins=[{"plugin_class": "MyCustomPlugin", "args": {}])
 validator.validate(obj=data_obj, target_class="NamedThing")
 
 ```
