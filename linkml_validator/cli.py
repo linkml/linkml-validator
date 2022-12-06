@@ -5,7 +5,7 @@ from linkml_validator.validator import DEFAULT_PLUGINS, Validator
 
 
 PLUGINS = {
-    "JsonschemaValidationPlugin": "linkml_validator.plugins.jsonschema_validation.JsonschemaValidationPlugin",
+    "JsonSchemaValidationPlugin": "linkml_validator.plugins.jsonschema_validation.JsonSchemaValidationPlugin",
     "RangeValidationPlugin": "linkml_validator.plugins.range_validation.RangeValidationPlugin",
 }
 
@@ -50,7 +50,7 @@ def cli(inputs, schema, output, target_class, plugins, strict):
     """
     Run the Validator on data from one or more files.
     """
-    plugin_class_references = set()
+    plugin_class_references = []
     if not plugins:
         plugins = DEFAULT_PLUGINS.values()
     for plugin in plugins:
@@ -59,7 +59,7 @@ def cli(inputs, schema, output, target_class, plugins, strict):
         plugin_module_name = ".".join(plugin.split(".")[:-1])
         plugin_class_name = plugin.split(".")[-1]
         plugin_class = import_plugin(plugin_module_name, plugin_class_name)
-        plugin_class_references.add(plugin_class)
+        plugin_class_references.append({'plugin_class': plugin_class})
     validator = Validator(schema=schema, plugins=plugin_class_references)
     for filename in inputs:
         reports = [x for x in validator.validate_file(filename=filename, target_class=target_class, strict=strict)]

@@ -7,7 +7,7 @@ from linkml_validator.plugins.jsonschema_validation import JsonSchemaValidationP
 
 
 DEFAULT_PLUGINS = {
-    "JsonschemaValidationPlugin": JsonSchemaValidationPlugin
+    "JsonSchemaValidationPlugin": JsonSchemaValidationPlugin
 }
 
 
@@ -17,13 +17,13 @@ class Validator:
 
     Args:
         schema: Path or URL to schema YAML
-        plugins: A set of plugin classes to use for validation
+        plugins: A list of plugin classes to use for validation
 
     """
 
     def __init__(self, schema: str, plugins: List[Dict] = None) -> None:
         self.schema = schema
-        self.plugins = set()
+        self.plugins = []
         if plugins:
             for plugin in plugins:
                 plugin_class = plugin["plugin_class"]
@@ -33,11 +33,11 @@ class Validator:
                 if not issubclass(plugin_class, BasePlugin):
                     raise Exception(f"{plugin_class} must be a subclass of {BasePlugin}")
                 instance = plugin_class(schema=self.schema, **plugin_args)
-                self.plugins.add(instance)
+                self.plugins.append(instance)
         else:
             for plugin_class in DEFAULT_PLUGINS.values():
                 instance = plugin_class(schema=self.schema)
-                self.plugins.add(instance)
+                self.plugins.append(instance)
 
     def validate(
         self, obj: Dict, target_class: str, strict: bool = False, **kwargs
