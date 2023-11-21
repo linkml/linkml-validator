@@ -1,3 +1,5 @@
+⚠️ **Note:** This repository has been archived and its functionalities have been folded into https://github.com/linkml/linkml.
+
 # LinkML Validator
 
 [![Run tests](https://github.com/linkml/linkml-validator/actions/workflows/run-tests.yml/badge.svg)](https://github.com/linkml/linkml-validator/actions/workflows/run-tests.yml)
